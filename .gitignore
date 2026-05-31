@@ -1,0 +1,15 @@
+# Ignorar ambientes virtuais e cache do Python
+venv/
+__pycache__/
+exemplos_doc/
+argon_encrypt.py
+
+# Ignorar o Banco de Dados (O da AWS vai ficar seguro lá no volume)
+dados/
+*.db
+*.sqlite3
+
+# Ignorar Arquivos de Segurança MÁXIMA
+.env
+*.pem
+
