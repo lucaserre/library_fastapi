@@ -45,12 +45,15 @@ jobs:
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_SSH_KEY }}
         script: |
-          
+ 
           sudo apt-get update
-          sudo apt-get install -y docker compose-plugin docker compose
+          sudo apt-get install -y docker-compose-plugin
+
           
           sudo docker rm -f api-biblioteca || true
+
           
           sudo docker compose pull
-          
+
+          # 4. Sobe os novos containers
           sudo docker compose up -d
