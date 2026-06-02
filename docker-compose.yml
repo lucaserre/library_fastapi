@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  # --- SERVIÇO 1: O MOTOR DO BANCO DE DADOS ---
+  db_postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=bibliotecadb
+    volumes:
+      - postgres_local_data:/var/lib/postgresql/data
+
+  # --- SERVIÇO 2: A SUA API ---
+  api_biblioteca:
+    image: lucaserre/minha-api:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db_postgres
+    environment:
+      # É aqui que a API descobre onde o banco está morando na AWS!
+      - DATABASE_URL=postgresql://admin:admin@db_postgres:5432/bibliotecadb
+
+# --- DECLARAÇÃO DO PEN-DRIVE ---
+volumes:
+  postgres_local_data:

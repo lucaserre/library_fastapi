@@ -29,16 +29,28 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/minha-api:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/minha-api:latest
 
-    
-    - name: Deploy na AWS EC2
+    - name: Copiar Compose para a AWS
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        source: "docker-compose.yml"
+        target: "~/"
+
+
+    - name: Deploy na AWS EC2 com Compose
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.AWS_HOST }}
         username: ${{ secrets.AWS_USERNAME }}
         key: ${{ secrets.AWS_SSH_KEY }}
-        
         script: |
-          sudo docker stop api-biblioteca || true
-          sudo docker rm api-biblioteca || true
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/minha-api:latest
-          sudo docker run -d --name api-biblioteca -p 8000:8000 -v volume_banco:/app/dados ${{ secrets.DOCKER_USERNAME }}/minha-api:latest
+          # Mata o fusca antigo do SQLite para liberar a porta 8000
+          sudo docker rm -f api-biblioteca || true
+          
+          # Baixa a versão mais recente do seu código e do Postgres
+          sudo docker compose pull
+          
+          # Liga a fábrica inteira em background
+          sudo docker compose up -d

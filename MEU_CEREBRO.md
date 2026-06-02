@@ -30,6 +30,13 @@ pip install sqlalchemy
 # 2. models.py -> Cria as tabelas do banco. 1 Classe Python = 1 Tabela. Atributos = Colunas.
 # 3. main.py -> Usa a Sessão (db: Session) para fazer db.add(), db.commit() e db.refresh().
 
+# Tratamento de Caminho e Permissão (Windows vs Linux):
+# O SQLite não cria pastas sozinho. Para evitar erros no Windows, force a criação do diretório no database.py:
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE_PATH = os.path.join(BASE_DIR, "dados", "biblioteca.db")
+os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True) # O trator de diretórios
+
 # ==========================================
 # FASE 6: ATUALIZAÇÃO E PERSISTÊNCIA NA NUVEM (Deploy 2.0)
 # ==========================================
@@ -55,5 +62,25 @@ sudo docker pull SEU_USUARIO/minha-api:latest
 
 # 6. O Lançamento Blindado com VOLUME (Obrigatório para não perder o Banco de Dados):
 # O parâmetro '-v nome_volume:/caminho/no/conteiner' cria um "pen-drive" na AWS.
-# Se o contêiner morrer, os dados da pasta /app/dados sobrevivem.
 sudo docker run -d --name api-biblioteca -p 8000:8000 -v volume_banco:/app/dados SEU_USUARIO/minha-api:latest
+
+# ==========================================
+# FASE 7: CI/CD E GESTÃO DE REPOSITÓRIO (GitHub)
+# ==========================================
+
+# Regra Crítica de Segurança:
+# NUNCA envie .env, chaves .pem ou bancos de dados reais para o GitHub. Use o arquivo .gitignore.
+
+# Comando de Emergência (Lavagem Cerebral do Git):
+# Se o Git engolir arquivos proibidos e o .gitignore não estiver funcionando, limpe o cache:
+git rm -r --cached .
+git add .
+git status
+
+# Estrutura do GitHub Actions (O Robô de Deploy):
+# O arquivo de automação deve OBRIGATORIAMENTE ficar neste caminho na raiz do projeto:
+# .github/workflows/deploy.yml
+
+# Automação Industrial:
+# Com as chaves salvas no GitHub Secrets (AWS_HOST, DOCKER_PASSWORD, etc), 
+# um simples "git push" dispara o robô que faz o build, entra via SSH e atualiza a nuvem automaticamente.
