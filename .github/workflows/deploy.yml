@@ -47,10 +47,10 @@ jobs:
         script: |
           
           sudo apt-get update
-          sudo apt-get install -y docker-compose-plugin docker-compose
+          sudo apt-get install -y docker compose-plugin docker compose
           
-          sudo docker rm -f api-teste || true
+          sudo docker rm -f api-biblioteca || true
           
-          sudo docker-compose pull
+          sudo docker compose pull
           
-          sudo docker-compose up -d
+          sudo docker compose up -d
