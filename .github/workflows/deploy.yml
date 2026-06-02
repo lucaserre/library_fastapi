@@ -49,12 +49,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose-plugin docker-compose
           
-          
           sudo docker rm -f api-biblioteca || true
           
-          
-          
           sudo docker-compose pull
-          
           
           sudo docker-compose up -d
