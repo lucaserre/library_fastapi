@@ -1,8 +1,7 @@
 from __future__ import annotations
 from database import Base
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Integer, Float
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey, Float
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -36,6 +35,10 @@ class Books_Read(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id") )
     name: Mapped[str] = mapped_column(String(50))
+    author: Mapped[str | None] = mapped_column(String(50))
+    gender: Mapped[str | None] = mapped_column(String(100))
+    rating: Mapped[int | None] = mapped_column(Integer)
+    review: Mapped[str | None] = mapped_column(String(1000))
     finished_in: Mapped[datetime] = mapped_column()
 
     user: Mapped[User] = relationship(back_populates="books_read")

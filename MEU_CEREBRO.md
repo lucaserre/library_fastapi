@@ -84,3 +84,32 @@ git status
 # Automação Industrial:
 # Com as chaves salvas no GitHub Secrets (AWS_HOST, DOCKER_PASSWORD, etc), 
 # um simples "git push" dispara o robô que faz o build, entra via SSH e atualiza a nuvem automaticamente.
+
+# ==========================================
+# FASE 8: CLEAN ARCHITECTURE E BOAS PRÁTICAS
+# ==========================================
+
+# A Regra de Ouro da Arquitetura Limpa:
+# "Cada arquivo tem uma única responsabilidade. O que acontece em Vegas, fica em Vegas."
+
+# 1. Roteadores (APIRouter): Departamentos isolados (auth.py, stock.py, user.py). 
+# O main.py vira apenas um "Quartel General" que liga a tomada e não tem lógica de negócios.
+# 2. Schemas (Pydantic): O catálogo de moldes. Define apenas a FORMA geométrica dos dados de entrada/saída.
+# 3. Security/Dependencies: O motor do carro. Isola as conexões com o banco (get_db) e validações de token para evitar o "Erro de Importação Circular".
+
+# Regra de Ouro do CRUD e RESTful:
+# POST   = Criar (Insert)
+# GET    = Ler (Select)
+# PUT    = Atualizar tudo (Update)
+# DELETE = Apagar (Delete)
+
+# ==========================================
+# FASE 9: O CATÁLOGO DE FERRAMENTAS (O Cinto do Batman)
+# ==========================================
+
+# FastAPI + APIRouter: O garçom da API. Recebe o pedido do cliente (HTTP) e leva pra cozinha.
+# Pydantic: O segurança da porta. Só deixa entrar o formato de dado (JSON) exato que foi definido.
+# SQLAlchemy: O tradutor (ORM). Você escreve Python, ele traduz para SQL puro pro banco entender.
+# Alembic: O Arquiteto Civil. Guarda as "plantas" (migrações) do banco de dados e cria/altera colunas sem apagar os dados existentes.
+# Docker / DockerHub: O caminhão de mudança. Empacota todo o seu sistema (código + Linux + Python) num contêiner padronizado que roda em qualquer PC do planeta.
+# GitHub Actions (CI/CD): A Esteira DevOps. Um robô que vigia seu código; quando você dá 'git push', ele automaticamente constrói a imagem nova e atualiza a AWS sozinho.

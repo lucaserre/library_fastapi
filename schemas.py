@@ -33,8 +33,16 @@ class ItemSchema(BaseModel):
 
 class BookReadCreate(BaseModel):
     name: str
+    author: str | None = None
+    gender: str | None = None
+    rating: int | None = None
+    review: str | None = None
     finished_in: datetime 
 
 class BookReadResponse(BaseModel):
     name: str
-    finished_in: datetime
+    author: str | None = None
+    gender: str | None = None
+    rating: int | None = None
+    review: str | None = None
+    finished_in: datetime 

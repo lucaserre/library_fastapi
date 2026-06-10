@@ -1,12 +1,10 @@
 import models
-from fastapi import Depends, APIRouter
-from sqlalchemy.orm import Session
+from security import limiter
 from schemas import UserCreate, Token
 from security import get_db, get_password_hash, authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
 from typing import Annotated
-import models
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, APIRouter, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -27,8 +25,8 @@ async def new_user(new_register: UserCreate,  db: Session = Depends(get_db)):
     return db_user
 
 @router.post("/token")
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+async def login_for_access_token(request: Request, form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(

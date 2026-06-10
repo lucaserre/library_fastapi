@@ -9,8 +9,12 @@ from pwdlib import PasswordHash
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from database import engine, SessionLocal, Base
-from typing import Annotated
 from schemas import TokenData
+
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+
 
 from dotenv import load_dotenv
 
@@ -25,6 +29,7 @@ ALGORITHM = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+limiter = Limiter(key_func=get_remote_address)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl = "token")
 password_hash = PasswordHash.recommended()
 DUMMY_HASH = password_hash.hash("dummypassword")

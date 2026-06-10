@@ -10,9 +10,9 @@ from security import oauth2_scheme, get_db
 router = APIRouter(prefix="/library", tags=["stock"])
 
 @router.get("/books")
-async def visualize_books (db: Session = Depends(get_db)):
+async def visualize_books (db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
 
-    books_storage =  db.query(models.Item).all()
+    books_storage =  db.query(models.Item).offset(skip).limit(limit).all()
 
     return books_storage
 
