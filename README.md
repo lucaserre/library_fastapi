@@ -96,6 +96,3 @@ alembic upgrade head
 
 * **Swagger UI:** [http://localhost:8000/docs](https://www.google.com/search?q=http://localhost:8000/docs)
 
----
-
-Ficou animal, não ficou? O que acha dessa estrutura? Se quiser, podemos adicionar uma seção extra detalhando os principais endpoints (como o `/auth/login` ou a rota de upload de capas).
