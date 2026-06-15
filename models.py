@@ -16,8 +16,13 @@ class Item(Base):
    
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(100))
-    gender: Mapped[str] = mapped_column(String(50))
+    author: Mapped[str | None] = mapped_column(String(50))
+    genre: Mapped[str] = mapped_column(String(50))
+    rating: Mapped[int | None] = mapped_column(Integer)
     price: Mapped[float] = mapped_column(Float)
+    cover_url: Mapped[str | None] = mapped_column(String(2048))
+
+    books_read: Mapped[list["Books_Read"]] = relationship(back_populates="item")
 
 class User(Base):
     __tablename__ = "user"
@@ -34,12 +39,16 @@ class Books_Read(Base):
     __tablename__ = "books_read"
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id") )
+    item_id: Mapped[int] = mapped_column(ForeignKey("items.id") )
     name: Mapped[str] = mapped_column(String(50))
     author: Mapped[str | None] = mapped_column(String(50))
-    gender: Mapped[str | None] = mapped_column(String(100))
+    genre: Mapped[str | None] = mapped_column(String(100))
     rating: Mapped[int | None] = mapped_column(Integer)
     review: Mapped[str | None] = mapped_column(String(1000))
+    cover_url: Mapped[str | None] = mapped_column(String(2048))
     finished_in: Mapped[datetime] = mapped_column()
 
     user: Mapped[User] = relationship(back_populates="books_read")
+    item: Mapped[Item] = relationship(back_populates="books_read")
+    
     

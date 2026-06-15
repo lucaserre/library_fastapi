@@ -14,6 +14,8 @@ from schemas import TokenData
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
+import boto3
+
 
 
 from dotenv import load_dotenv
@@ -28,6 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 limiter = Limiter(key_func=get_remote_address)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl = "token")

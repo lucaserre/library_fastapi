@@ -1,3 +1,4 @@
+from fastapi import File, UploadFile 
 from routers import auth
 from routers import stock
 from routers import user

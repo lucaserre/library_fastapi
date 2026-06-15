@@ -1,7 +1,6 @@
 import models
-from security import limiter
 from schemas import UserCreate, Token
-from security import get_db, get_password_hash, authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from security import get_db, get_password_hash, authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, limiter
 from datetime import timedelta
 from typing import Annotated
 from fastapi import Depends, APIRouter, HTTPException, status, Request

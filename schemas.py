@@ -28,21 +28,30 @@ class UserCreate(BaseModel):
 class ItemSchema(BaseModel):
     id: int
     name: str
-    gender: str
+    author: str
+    genre: str
+    rating: float
     price: float
+    cover_url: str | None
 
 class BookReadCreate(BaseModel):
     name: str
     author: str | None = None
-    gender: str | None = None
+    genre: str | None = None
     rating: int | None = None
     review: str | None = None
+    cover_url: str | None
     finished_in: datetime 
 
 class BookReadResponse(BaseModel):
     name: str
     author: str | None = None
-    gender: str | None = None
+    genre: str | None = None
     rating: int | None = None
     review: str | None = None
     finished_in: datetime 
+
+class UserStatsResponse(BaseModel):
+    total_books_read: int
+    media_books_rating: float
+    favorite_author: str | None
