@@ -31,19 +31,23 @@ Esta é uma API RESTful de alta performance desenvolvida para gerenciar o acervo
 O projeto adota uma estrutura modular onde cada componente possui uma única responsabilidade (*Single Responsibility Principle*):
 
 ```text
-├── .github/workflows/   # Esteira de CI/CD (Deploy Automático)
-├── alembic/             # Arquivos de histórico de migração do banco
-├── app/
-│   ├── database.py      # Configuração do Engine e Sessões do SQLAlchemy
-│   ├── main.py          # Quartel-General (Inicialização e Tomadas)
-│   ├── models.py        # Modelos físicos do Banco de Dados (SQLAlchemy)
-│   ├── schemas.py       # Moldes e Validação de Dados (Pydantic)
-│   ├── routers/         # Departamentos de Rotas Isoladas (Auth, Livros, Fichas)
-│   └── security.py      # Lógica de Hashing, JWT e Dependências
+├── .github/workflows/   # Esteira de CI/CD (Deploy Automático via deploy.yml)
+├── alembic/             # Configuração e histórico de migrações do banco de dados
+├── dados/               # Diretório de persistência local (quando não usando Docker)
+├── routers/             # Roteadores de endpoints isolados (auth, stock, user)
 ├── .env.example         # Exemplo das variáveis de ambiente necessárias
+├── .gitignore           # Ocultação de credenciais e pastas virtuais (venv)
+├── alembic.ini          # Arquivo de inicialização do orquestrador de migrações
+├── argon_encrypt.py     # Script utilitário para geração manual de hashes
+├── database.py          # Configuração do Engine e Sessão do SQLAlchemy
 ├── docker-compose.yml   # Orquestração dos containers locais (API + Postgres)
 ├── Dockerfile           # Instruções de build da imagem Linux da API
-└── requirements.txt     # Dependências do projeto
+├── main.py              # Ponto de entrada da aplicação (Quartel-General)
+├── models.py            # Modelos físicos das tabelas do Banco de Dados
+├── requirements.txt     # Dependências do projeto (lista VIP do pip)
+├── schemas.py           # Validação de dados de entrada/saída (Pydantic)
+├── security.py          # Lógica de senhas, JWT e dependências de autenticação
+└── services.py          # Regras de negócios isoladas e integrações externas (AWS)
 
 ```
 
