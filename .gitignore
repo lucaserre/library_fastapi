@@ -15,21 +15,9 @@ dados/
 programa_c/
 rm_request.txt
 
-# Segredos e Chaves
 .env
 *.pem
-*.key
-
-# Bancos de Dados locais
 *.db
-*.sqlite3
-
-# Ambientes Virtuais e Cache Python
 venv/
-env/
 __pycache__/
-*.pyc
-
-# Logs e lixo
-*.log
-rm_request.txt
+frontend/node_modules/
