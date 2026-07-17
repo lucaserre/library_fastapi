@@ -15,13 +15,20 @@ router = APIRouter()
 @router.get("/library/books-read/recommendations", response_model=list[ItemSchema])
 async def get_recommendations(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     
-    
-    favorite_author = db.query(models.Books_Read.author).filter(models.Books_Read.user_id == current_user.id).group_by(models.Books_Read.author).order_by(func.count().desc()).scalar()
+    favorite_author = db.query(models.Books_Read.author).filter(models.Books_Read.user_id == current_user.id).group_by(models.Books_Read.author).order_by(func.count().desc()).limit(1).scalar()
 
     if favorite_author is None:
-        return {"message": "ainda não há livros lidos"}
-    query_read_books = db.query(models.Books_Read.item_id).filter(models.Books_Read.user_id == current_user.id)
-    recommended_books = db.query(models.Item).filter(models.Item.author.ilike(f"%{favorite_author}%"), ~models.Item.id.in_(query_read_books)).limit(3).all()
+       
+        return [] 
+        
+    
+    query_read_books_names = db.query(models.Books_Read.name).filter(models.Books_Read.user_id == current_user.id)
+    
+    
+    recommended_books = db.query(models.Item).filter(
+        models.Item.author.ilike(f"%{favorite_author}%"), 
+        ~models.Item.name.in_(query_read_books_names)
+    ).limit(3).all()
     
     return recommended_books
     
@@ -30,7 +37,7 @@ async def get_recommendations(db: Session = Depends(get_db), current_user: model
 async def books_read_stats(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     total_books= db.query(models.Books_Read).filter(models.Books_Read.user_id == current_user.id).count()
     average_rating = db.query(func.coalesce(func.avg(models.Books_Read.rating), 0.0)).filter(models.Books_Read.user_id == current_user.id).scalar()
-    authors_read = db.query(models.Books_Read.author).filter(models.Books_Read.user_id == current_user.id).group_by(models.Books_Read.author).order_by(func.count().desc()).scalar()
+    authors_read = db.query(models.Books_Read.author).filter(models.Books_Read.user_id == current_user.id).group_by(models.Books_Read.author).order_by(func.count().desc()).limit(1).scalar()
 
 
     return {
@@ -80,8 +87,16 @@ async def delete_my_reading(book_id: int, db: Session = Depends(get_db), current
 @router.post("/library/books-read")
 async def my_book(new_reading: BookReadCreate, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     
-    
-    db_books_read = models.Books_Read(user_id = current_user.id, name = new_reading.name, finished_in = new_reading.finished_in)
+    db_books_read = models.Books_Read(
+        user_id=current_user.id, 
+        name=new_reading.name,
+        author=new_reading.author,
+        genre=new_reading.genre,
+        rating=new_reading.rating,
+        review=new_reading.review,
+        cover_url=new_reading.cover_url,
+        finished_in=new_reading.finished_in
+    )
 
     db.add(db_books_read)
     db.commit()

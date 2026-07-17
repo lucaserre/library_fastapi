@@ -21,7 +21,11 @@ app.include_router(user.router)
 
 target_metadata = Base.metadata
 
-origins = ["http://localhost:3000"]
+
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 
 app.add_middleware(
     CORSMiddleware,

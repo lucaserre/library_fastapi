@@ -42,7 +42,7 @@ async def books_image(book_id: int, db: Session = Depends(get_db), current_user:
 @router.post("")
 async def new_book(token: Annotated[str, Depends(oauth2_scheme)],item: ItemSchema, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     
-    db_book = models.Item(**item.model_dump()).filter(models.Books_Read.user_id == current_user.id)
+    db_book = models.Item(**item.model_dump())
     
     db.add(db_book)
     db.commit()
@@ -82,7 +82,7 @@ async def update_book(token: Annotated[str, Depends(oauth2_scheme)], book_id: in
         raise HTTPException(status_code=404, detail="Livro não encontrado.")
     
     
-    my_book.id = item.id
+    
     my_book.name = item.name
     my_book.genre = item.genre
     my_book.price = item.price

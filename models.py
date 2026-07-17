@@ -22,7 +22,7 @@ class Item(Base):
     price: Mapped[float] = mapped_column(Float)
     cover_url: Mapped[str | None] = mapped_column(String(2048))
 
-    books_read: Mapped[list["Books_Read"]] = relationship(back_populates="item")
+    
 
 class User(Base):
     __tablename__ = "user"
@@ -39,7 +39,7 @@ class Books_Read(Base):
     __tablename__ = "books_read"
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id") )
-    item_id: Mapped[int] = mapped_column(ForeignKey("items.id") )
+     
     name: Mapped[str] = mapped_column(String(50))
     author: Mapped[str | None] = mapped_column(String(50))
     genre: Mapped[str | None] = mapped_column(String(100))
@@ -48,7 +48,8 @@ class Books_Read(Base):
     cover_url: Mapped[str | None] = mapped_column(String(2048))
     finished_in: Mapped[datetime] = mapped_column()
 
-    user: Mapped[User] = relationship(back_populates="books_read")
-    item: Mapped[Item] = relationship(back_populates="books_read")
+    user: Mapped["User"] = relationship(back_populates="books_read")
+    
+
     
     

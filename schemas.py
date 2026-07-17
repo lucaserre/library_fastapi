@@ -40,16 +40,18 @@ class BookReadCreate(BaseModel):
     genre: str | None = None
     rating: int | None = None
     review: str | None = None
-    cover_url: str | None
-    finished_in: datetime 
+    cover_url: str | None = None # Deixei o None explícito caso o usuário não mande capa logo de cara
+    finished_in: datetime
 
 class BookReadResponse(BaseModel):
+    id: int
     name: str
     author: str | None = None
     genre: str | None = None
     rating: int | None = None
     review: str | None = None
-    finished_in: datetime 
+    cover_url: str | None = None
+    finished_in: datetime
 
 class UserStatsResponse(BaseModel):
     total_books_read: int
